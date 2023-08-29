@@ -3,16 +3,19 @@ class Review:
     all1 = []
 
     def __init__(self, customer, restaurant, rating):
-        self.customer = customer
-        self.restaurant = restaurant
-        self._rating = rating
+        self._customer = customer
+        self._restaurant = restaurant
+        self._rating = Review.validate_rating_initialization(rating)
         Review.add_review_to_all(self)
 
+    @staticmethod
+    def validate_rating_initialization(rating):
+        if(type(rating) == int):
+            return rating
+        else:
+            print("rating must be an integer")
 
 
-        
-    def get_just_rating(self):
-        return self.rating
     
     @classmethod
     def add_review_to_all(cls, review):
@@ -20,27 +23,51 @@ class Review:
     
     @classmethod
     def all(cls):
-        
-        return ["Customer:" + ' '  + review.customer + ' ' + ',' + "Restaurant:" + ' ' + review.restaurant + ' ' + ',' + "Rating:" + str(review.rating) for review in cls.all1]
+        review = []
+        return [
+            {
+                "Customer" : review.customer,
+                "Restaurant" : review.restaurant,
+                "Rating" : review._rating
+            }
+            
+            for review in cls.all1]
     
     def get_rating(self):
-        return self._rating 
+        return self.rating 
     
     def validate_rating(self, rating):
         if(type(rating) == int):
-            self._rating = rating
+            self.rating = rating
         else:
-            print("rating must be an integer")
+            return "rating must be an integer"
     
-    rating= property(get_rating, validate_rating)
+    rating = property(validate_rating, get_rating)
+    @property
+    def customer(self):
+        return self._customer
+    @property
+    def restaurant(self):
+        return self._restaurant
     
 
 
 good = Review('John', "Pizza Inn", 5)
+ron = Review('Johny', "Pizza Inn", 1)
 not_bad = Review('Lee', "Burger King", 2)
 bad = Review('Kanu', "Art Cafe", 4)
-not_good = Review('Mercy', "Alcheno", 'three')
+lod = Review('leni', "Pizza Inn", 7)
+not_good = Review('Mercy', "Alcheno", 9)
+good = Review('Kon', "Pizza Inn", 5)
+good = Review('Jo', "Pizza Inn", 5)
+good = Review('Mon', "Pizza Inn", 5)
+good = Review('Kohn', "Pizza Inn", 5)
+good = Review('Lohn Doe', "Pizza In", 5)
 
-print(good.all())
 
-print(good.rating)
+# print(Review.all())
+
+
+# print(good.all())
+# # good.restaurant = "alcheno"
+# print(not_good._rating)
